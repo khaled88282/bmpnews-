@@ -1,11 +1,569 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Ajker News Portal</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abdun Nur Grocery — Credit Management System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Hind+Siliguri:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root { --font-sans: 'Inter','Hind Siliguri',system-ui,sans-serif; --font-mono: 'JetBrains Mono','Courier New',monospace; }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; background:#f9fafb; color:#111827; line-height:1.6; }
+    .bn { font-family: 'Hind Siliguri', sans-serif; line-height:1.8; }
+    code, pre { font-family: var(--font-mono); }
+    ::-webkit-scrollbar { width:8px; height:8px; }
+    ::-webkit-scrollbar-track { background:#f1f5f9; }
+    ::-webkit-scrollbar-thumb { background:#94a3b8; border-radius:99px; }
+    ::-webkit-scrollbar-thumb:hover { background:#059669; }
+    ::selection { background:#d1fae5; color:#064e3b; }
+    :focus-visible { outline:2px solid #059669; outline-offset:2px; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .animate-pulse { animation:pulse 2s cubic-bezier(.4,0,.6,1) infinite; }
+    .card-hover { transition:transform .2s ease,box-shadow .2s ease; }
+    .card-hover:hover { transform:translateY(-2px); box-shadow:0 10px 40px rgba(0,0,0,.12); }
+    [data-lang] { display:none; }
+    [data-lang].active { display:block; }
+    .lang-grid [data-lang] { display:none; }
+    .lang-grid [data-lang].active { display:grid; }
+    .lang-flex [data-lang] { display:none; }
+    .lang-flex [data-lang].active { display:flex; }
+  </style>
 </head>
-<body>
-    <h1>Welcome to Our News Website!</h1>
-    <p>Amader free GitHub news website ekhon live!</p>
+<body class="min-h-screen bg-gray-50">
+
+<!-- ── TOP NAV ── -->
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200 shadow-sm">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 flex items-center justify-center shadow text-white font-bold text-sm">AN</div>
+      <div class="hidden sm:block">
+        <p class="text-sm font-bold text-gray-900 leading-none">Abdun Nur Grocery</p>
+        <p class="text-xs text-emerald-600">Credit Management System</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <!-- Language Toggle -->
+      <div class="flex items-center bg-gray-100 rounded-full p-1 gap-1">
+        <button id="btn-en" onclick="setLang('en')"
+          class="px-3 py-1 rounded-full text-xs font-semibold transition-all bg-emerald-600 text-white shadow">EN</button>
+        <button id="btn-bn" onclick="setLang('bn')"
+          class="px-3 py-1 rounded-full text-xs font-semibold transition-all text-gray-500 hover:text-gray-800">বাং</button>
+      </div>
+      <a href="https://github.com" target="_blank" rel="noopener noreferrer"
+        class="flex items-center gap-1.5 bg-gray-900 text-white px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-gray-700 transition-colors">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/>
+        </svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<header class="relative bg-gradient-to-br from-emerald-700 via-teal-700 to-cyan-800 text-white overflow-hidden">
+  <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-48 translate-x-48"></div>
+  <div class="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full translate-y-32 -translate-x-32"></div>
+  <div class="relative max-w-6xl mx-auto px-4 py-16 md:py-24">
+
+    <!-- Badges -->
+    <div class="flex flex-wrap justify-center gap-2 mb-6">
+      <span class="bg-white/15 border border-white/30 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur">Private</span>
+      <span class="bg-white/15 border border-white/30 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur">Secure</span>
+      <span class="bg-white/15 border border-white/30 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur">Mobile-Friendly</span>
+      <span class="bg-white/15 border border-white/30 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur">Firebase</span>
+      <span class="bg-white/15 border border-white/30 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur">PDF Ready</span>
+    </div>
+
+    <h1 class="text-3xl md:text-5xl font-extrabold text-center leading-tight mb-3">
+      Abdun Nur Grocery<br/>
+      <span class="text-emerald-200">Credit Management System</span>
+    </h1>
+    <p class="text-center text-emerald-100 text-base md:text-xl font-medium mb-2 bn">
+      আবদুন নূর গ্রোসারি — ক্রেডিট ম্যানেজমেন্ট সিস্টেম
+    </p>
+    <p class="text-center text-white/70 text-sm mt-1 mb-8">
+      📍 Deira, Dubai, UAE &nbsp;|&nbsp; 🏪 Abdun Nur Grocery LLC
+    </p>
+
+    <!-- Stat pills -->
+    <div class="flex flex-wrap justify-center gap-4 mb-10">
+      <div class="bg-white/10 border border-white/20 rounded-2xl px-6 py-3 text-center backdrop-blur">
+        <p class="text-2xl font-extrabold text-emerald-200">100%</p>
+        <p class="text-xs text-white/70">Secure</p>
+      </div>
+      <div class="bg-white/10 border border-white/20 rounded-2xl px-6 py-3 text-center backdrop-blur">
+        <p class="text-2xl font-extrabold text-emerald-200">∞</p>
+        <p class="text-xs text-white/70">Customers</p>
+      </div>
+      <div class="bg-white/10 border border-white/20 rounded-2xl px-6 py-3 text-center backdrop-blur">
+        <p class="text-2xl font-extrabold text-emerald-200">PDF</p>
+        <p class="text-xs text-white/70">Invoices</p>
+      </div>
+      <div class="bg-white/10 border border-white/20 rounded-2xl px-6 py-3 text-center backdrop-blur">
+        <p class="text-2xl font-extrabold text-emerald-200">WA</p>
+        <p class="text-xs text-white/70">Auto-Msg</p>
+      </div>
+    </div>
+
+    <p class="max-w-3xl mx-auto text-center text-white/80 text-sm md:text-base leading-relaxed" data-en>
+      A <strong class="text-white">private, secure, and mobile-friendly</strong> digital tool designed exclusively for <em>Abdun Nur Grocery LLC</em> to manage customer credit accounts, track daily purchases, automate outstanding balance calculations, generate professional invoices, and streamline debt collection — all in one place.
+    </p>
+    <p class="max-w-3xl mx-auto text-center text-emerald-200/80 text-sm leading-relaxed bn mt-3" data-bn>
+      এটি <strong class="text-emerald-100">আবদুন নূর গ্রোসারি এলএলসি</strong>-এর জন্য একটি নিরাপদ, ব্যক্তিগত ও মোবাইল-বান্ধব ডিজিটাল টুল — যা গ্রাহকদের বাকির হিসাব, দৈনিক ক্রয়, স্বয়ংক্রিয় হিসাব, পেশাদার ইনভয়েস ও ঋণ আদায় সহজ করে।
+    </p>
+  </div>
+</header>
+
+<!-- ── FEATURES ── -->
+<section class="max-w-6xl mx-auto px-4 py-20">
+  <!-- Section Title -->
+  <div class="text-center mb-12">
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-1" data-en>Key Features</h2>
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-1 bn hidden" data-bn>মূল বৈশিষ্ট্যসমূহ</h2>
+    <p class="text-xl text-emerald-600 font-semibold mb-3 bn">মূল বৈশিষ্ট্যসমূহ</p>
+    <p class="text-gray-500 max-w-2xl mx-auto text-sm md:text-base" data-en>Everything your grocery shop needs to manage customer credit professionally.</p>
+    <p class="text-gray-500 max-w-2xl mx-auto text-sm md:text-base hidden bn" data-bn>আপনার মুদিখানার গ্রাহক ক্রেডিট পেশাদারভাবে পরিচালনার জন্য প্রয়োজনীয় সবকিছু।</p>
+    <div class="flex justify-center mt-4"><div class="h-1 w-20 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500"></div></div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="features-grid"></div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="bg-white border-y border-gray-100">
+  <div class="max-w-5xl mx-auto px-4 py-20">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-1" data-en>How It Works</h2>
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-1 hidden bn" data-bn>কীভাবে কাজ করে</h2>
+      <p class="text-xl text-emerald-600 font-semibold mb-3 bn">কীভাবে কাজ করে</p>
+      <p class="text-gray-500 max-w-2xl mx-auto text-sm md:text-base" data-en>Five simple steps to manage every customer credit account from start to resolution.</p>
+      <p class="text-gray-500 max-w-2xl mx-auto text-sm md:text-base hidden bn" data-bn>শুরু থেকে সমাধান পর্যন্ত প্রতিটি গ্রাহকের ক্রেডিট অ্যাকাউন্ট পরিচালনার পাঁচটি সহজ ধাপ।</p>
+      <div class="flex justify-center mt-4"><div class="h-1 w-20 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500"></div></div>
+    </div>
+    <div class="max-w-2xl mx-auto" id="workflow-list"></div>
+  </div>
+</section>
+
+<!-- ── TECH STACK ── -->
+<section class="max-w-6xl mx-auto px-4 py-20">
+  <div class="text-center mb-12">
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-1" data-en>Technology Stack</h2>
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-1 hidden bn" data-bn>প্রযুক্তি স্ট্যাক</h2>
+    <p class="text-xl text-emerald-600 font-semibold mb-3 bn">প্রযুক্তি স্ট্যাক</p>
+    <p class="text-gray-500 max-w-2xl mx-auto text-sm" data-en>Built on modern, battle-tested technologies for reliability and performance.</p>
+    <p class="text-gray-500 max-w-2xl mx-auto text-sm hidden bn" data-bn>নির্ভরযোগ্যতা ও পারফরম্যান্সের জন্য আধুনিক প্রযুক্তির উপর নির্মিত।</p>
+    <div class="flex justify-center mt-4"><div class="h-1 w-20 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500"></div></div>
+  </div>
+  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+    <div class="rounded-2xl border bg-amber-50 border-amber-200 text-amber-800 p-4 text-center shadow-sm card-hover"><div class="text-3xl mb-2">🔥</div><p class="font-bold text-sm leading-tight mb-1">Firebase Firestore</p><p class="text-xs opacity-70">Real-time NoSQL cloud database</p></div>
+    <div class="rounded-2xl border bg-yellow-50 border-yellow-200 text-yellow-800 p-4 text-center shadow-sm card-hover"><div class="text-3xl mb-2">🔐</div><p class="font-bold text-sm leading-tight mb-1">Firebase Auth</p><p class="text-xs opacity-70">Secure owner-only authentication</p></div>
+    <div class="rounded-2xl border bg-red-50 border-red-200 text-red-800 p-4 text-center shadow-sm card-hover"><div class="text-3xl mb-2">📄</div><p class="font-bold text-sm leading-tight mb-1">jsPDF + html2canvas</p><p class="text-xs opacity-70">Professional PDF generation</p></div>
+    <div class="rounded-2xl border bg-purple-50 border-purple-200 text-purple-800 p-4 text-center shadow-sm card-hover"><div class="text-3xl mb-2">📱</div><p class="font-bold text-sm leading-tight mb-1">Responsive UI</p><p class="text-xs opacity-70">Mobile-first CSS design</p></div>
+    <div class="rounded-2xl border bg-green-50 border-green-200 text-green-800 p-4 text-center shadow-sm card-hover"><div class="text-3xl mb-2">💬</div><p class="font-bold text-sm leading-tight mb-1">WhatsApp API</p><p class="text-xs opacity-70">wa.me deep-link automation</p></div>
+    <div class="rounded-2xl border bg-blue-50 border-blue-200 text-blue-800 p-4 text-center shadow-sm card-hover"><div class="text-3xl mb-2">⚡</div><p class="font-bold text-sm leading-tight mb-1">JavaScript ES6+</p><p class="text-xs opacity-70">Modern vanilla JS / React</p></div>
+  </div>
+</section>
+
+<!-- ── LEGAL NOTICE HIGHLIGHT ── -->
+<section class="bg-gradient-to-r from-red-700 to-rose-800 text-white">
+  <div class="max-w-5xl mx-auto px-4 py-16 text-center">
+    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-6">
+      <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+      </svg>
+    </div>
+    <h2 class="text-2xl md:text-3xl font-extrabold mb-2">Legal Notice Generator</h2>
+    <p class="text-red-200 text-lg font-semibold mb-6 bn">আইনি নোটিশ জেনারেটর</p>
+    <p class="max-w-2xl mx-auto text-white/80 text-sm md:text-base leading-relaxed mb-4">
+      If a customer <strong class="text-white">abandons their outstanding debt</strong> and becomes uncontactable, the system can generate a formal <em>"Notice of Default"</em> PDF — a legally structured document citing the customer's name, total outstanding amount, transaction dates, and shop details — ready for submission to Dubai Police or UAE courts.
+    </p>
+    <p class="max-w-2xl mx-auto text-red-200/80 text-sm leading-relaxed bn">
+      কোনো গ্রাহক যদি বকেয়া ঋণ ছেড়ে পালিয়ে যান এবং যোগাযোগ করা না যায়, তাহলে সিস্টেম স্বয়ংক্রিয়ভাবে একটি আনুষ্ঠানিক <em>"ডিফল্ট নোটিশ"</em> PDF তৈরি করবে — যা দুবাই পুলিশ বা আদালতে জমা দেওয়ার জন্য প্রস্তুত।
+    </p>
+  </div>
+</section>
+
+<!-- ── INSTALLATION ── -->
+<section class="max-w-5xl mx-auto px-4 py-20">
+  <div class="text-center mb-12">
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-1" data-en>Installation & Setup</h2>
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-1 hidden bn" data-bn>ইনস্টলেশন ও সেটআপ</h2>
+    <p class="text-xl text-emerald-600 font-semibold mb-3 bn">ইনস্টলেশন ও সেটআপ</p>
+    <p class="text-gray-500 max-w-2xl mx-auto text-sm" data-en>Get the system running locally in under 5 minutes.</p>
+    <p class="text-gray-500 max-w-2xl mx-auto text-sm hidden bn" data-bn>৫ মিনিটেরও কম সময়ে সিস্টেমটি স্থানীয়ভাবে চালু করুন।</p>
+    <div class="flex justify-center mt-4"><div class="h-1 w-20 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500"></div></div>
+  </div>
+
+  <div class="space-y-5" id="setup-list"></div>
+
+  <!-- Firebase ENV Config -->
+  <div class="mt-12 rounded-2xl border border-amber-200 bg-amber-50 p-6">
+    <div class="flex items-center gap-2 mb-3">
+      <span class="text-xl">⚙️</span>
+      <h3 class="font-bold text-amber-900">Firebase Configuration / ফায়ারবেস কনফিগারেশন</h3>
+    </div>
+    <p class="text-sm text-amber-800 mb-4">Create a <code class="bg-amber-100 px-1 rounded font-mono">.env</code> file in the project root and add your Firebase credentials:</p>
+    <div class="bg-gray-900 rounded-xl p-4 font-mono text-xs md:text-sm space-y-1 overflow-x-auto">
+      <p class="text-gray-500"># Firebase Config — .env</p>
+      <p class="text-emerald-400">VITE_FIREBASE_API_KEY=<span class="text-yellow-300">your_api_key</span></p>
+      <p class="text-emerald-400">VITE_FIREBASE_AUTH_DOMAIN=<span class="text-yellow-300">your_project.firebaseapp.com</span></p>
+      <p class="text-emerald-400">VITE_FIREBASE_PROJECT_ID=<span class="text-yellow-300">your_project_id</span></p>
+      <p class="text-emerald-400">VITE_FIREBASE_STORAGE_BUCKET=<span class="text-yellow-300">your_bucket</span></p>
+      <p class="text-emerald-400">VITE_FIREBASE_MESSAGING_SENDER_ID=<span class="text-yellow-300">your_sender_id</span></p>
+      <p class="text-emerald-400">VITE_FIREBASE_APP_ID=<span class="text-yellow-300">your_app_id</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECURITY ── -->
+<section class="bg-gray-900 text-white">
+  <div class="max-w-5xl mx-auto px-4 py-16">
+    <div class="grid md:grid-cols-2 gap-10">
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2 bg-emerald-600 rounded-xl">
+            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold">Security & Privacy</h3>
+        </div>
+        <p class="text-gray-300 text-sm leading-relaxed mb-3">This system is <strong class="text-white">private and owner-only</strong>. Firebase Authentication ensures that only authorised shop owners can access customer data. All data is stored in Firebase Firestore with strict security rules.</p>
+        <p class="text-emerald-400 text-sm leading-relaxed bn">এই সিস্টেমটি <strong class="text-emerald-300">সম্পূর্ণ ব্যক্তিগত ও মালিক-সুরক্ষিত</strong>। Firebase Authentication নিশ্চিত করে যে শুধুমাত্র অনুমোদিত দোকান মালিক গ্রাহক তথ্য অ্যাক্সেস করতে পারবেন।</p>
+      </div>
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2 bg-blue-600 rounded-xl">
+            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold">Important Disclaimer</h3>
+        </div>
+        <p class="text-gray-300 text-sm leading-relaxed mb-3">This repository is <strong class="text-white">private</strong> and intended solely for internal use at <em>Abdun Nur Grocery LLC</em>. Redistribution or commercial resale of this software is strictly prohibited.</p>
+        <p class="text-yellow-400 text-sm leading-relaxed bn">এই রিপোজিটরিটি <strong class="text-yellow-300">ব্যক্তিগত</strong> এবং শুধুমাত্র <em>আবদুন নূর গ্রোসারি এলএলসি</em>-এর অভ্যন্তরীণ ব্যবহারের জন্য। পুনরায় বিতরণ বা বাণিজ্যিক বিক্রয় সম্পূর্ণ নিষিদ্ধ।</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECT STRUCTURE ── -->
+<section class="max-w-5xl mx-auto px-4 py-20">
+  <div class="text-center mb-12">
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-1" data-en>Project File Structure</h2>
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-1 hidden bn" data-bn>প্রজেক্ট ফাইল স্ট্রাকচার</h2>
+    <p class="text-xl text-emerald-600 font-semibold mb-3 bn">প্রজেক্ট ফাইল স্ট্রাকচার</p>
+    <div class="flex justify-center mt-4"><div class="h-1 w-20 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500"></div></div>
+  </div>
+  <div class="bg-gray-950 rounded-2xl p-6 font-mono text-xs md:text-sm shadow-xl overflow-x-auto">
+    <div class="flex items-center py-0.5"><span class="mr-2">📁</span><span class="text-yellow-300">abdun-nur-credit-system/</span></div>
+    <div class="flex items-center py-0.5 pl-5"><span class="mr-2">📄</span><span class="text-blue-300">index.html</span><span class="text-gray-500 ml-2">— Main HTML entry</span></div>
+    <div class="flex items-center py-0.5 pl-5"><span class="mr-2">🎨</span><span class="text-pink-300">style.css</span><span class="text-gray-500 ml-2">— Responsive stylesheet</span></div>
+    <div class="flex items-center py-0.5 pl-5"><span class="mr-2">⚡</span><span class="text-yellow-200">script.js</span><span class="text-gray-500 ml-2">— Core application logic</span></div>
+    <div class="flex items-center py-0.5 pl-5"><span class="mr-2">📁</span><span class="text-yellow-300">src/</span></div>
+    <div class="flex items-center py-0.5 pl-10"><span class="mr-2">🔥</span><span class="text-orange-300">firebase.js</span><span class="text-gray-500 ml-2">— Firebase config & init</span></div>
+    <div class="flex items-center py-0.5 pl-10"><span class="mr-2">👤</span><span class="text-green-300">customers.js</span><span class="text-gray-500 ml-2">— Customer CRUD operations</span></div>
+    <div class="flex items-center py-0.5 pl-10"><span class="mr-2">💰</span><span class="text-emerald-300">transactions.js</span><span class="text-gray-500 ml-2">— Ledger management</span></div>
+    <div class="flex items-center py-0.5 pl-10"><span class="mr-2">📄</span><span class="text-red-300">pdf.js</span><span class="text-gray-500 ml-2">— PDF invoice generator</span></div>
+    <div class="flex items-center py-0.5 pl-10"><span class="mr-2">⚖️</span><span class="text-rose-300">legal.js</span><span class="text-gray-500 ml-2">— Legal notice generator</span></div>
+    <div class="flex items-center py-0.5 pl-10"><span class="mr-2">💬</span><span class="text-green-400">whatsapp.js</span><span class="text-gray-500 ml-2">— WhatsApp message builder</span></div>
+    <div class="flex items-center py-0.5 pl-5"><span class="mr-2">📁</span><span class="text-yellow-300">public/</span></div>
+    <div class="flex items-center py-0.5 pl-10"><span class="mr-2">🖼️</span><span class="text-purple-300">logo.png</span><span class="text-gray-500 ml-2">— Shop logo for PDF header</span></div>
+    <div class="flex items-center py-0.5 pl-5"><span class="mr-2">📝</span><span class="text-gray-400">.env</span><span class="text-gray-500 ml-2">— Firebase credentials (private)</span></div>
+    <div class="flex items-center py-0.5 pl-5"><span class="mr-2">📋</span><span class="text-gray-500">.env.example</span><span class="text-gray-500 ml-2">— Template for .env</span></div>
+    <div class="flex items-center py-0.5 pl-5"><span class="mr-2">📦</span><span class="text-gray-300">package.json</span></div>
+    <div class="flex items-center py-0.5 pl-5"><span class="mr-2">📖</span><span class="text-blue-200">README.md</span><span class="text-gray-500 ml-2">— This documentation</span></div>
+  </div>
+</section>
+
+<!-- ── WHATSAPP PREVIEW ── -->
+<section class="bg-gradient-to-br from-green-50 to-emerald-50 border-y border-green-100">
+  <div class="max-w-5xl mx-auto px-4 py-20">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-1" data-en>WhatsApp Message Preview</h2>
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-1 hidden bn" data-bn>হোয়াটসঅ্যাপ মেসেজ প্রিভিউ</h2>
+      <p class="text-xl text-emerald-600 font-semibold mb-3 bn">হোয়াটসঅ্যাপ মেসেজ প্রিভিউ</p>
+      <p class="text-gray-500 max-w-2xl mx-auto text-sm" data-en>The system auto-generates a professional message template like this:</p>
+      <p class="text-gray-500 max-w-2xl mx-auto text-sm hidden bn" data-bn>সিস্টেম স্বয়ংক্রিয়ভাবে এরকম একটি পেশাদার মেসেজ টেমপ্লেট তৈরি করে:</p>
+      <div class="flex justify-center mt-4"><div class="h-1 w-20 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500"></div></div>
+    </div>
+    <div class="flex justify-center">
+      <div class="w-full max-w-sm">
+        <div class="bg-gray-800 rounded-3xl p-3 shadow-2xl">
+          <div class="bg-white rounded-2xl overflow-hidden">
+            <div class="bg-green-600 text-white px-4 py-3 flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-green-400 flex items-center justify-center text-sm font-bold">R</div>
+              <div><p class="font-semibold text-sm">Rahman Ali</p><p class="text-xs text-green-200">Customer</p></div>
+            </div>
+            <div class="bg-[#e5ddd5] p-3 min-h-48">
+              <div class="bg-white rounded-2xl rounded-tl-none shadow px-4 py-3 max-w-xs text-xs leading-relaxed space-y-1">
+                <p class="font-bold text-gray-800">🏪 Abdun Nur Grocery LLC</p>
+                <p class="text-gray-500">Deira, Dubai | +971-XX-XXX-XXXX</p>
+                <hr class="my-1 border-gray-200"/>
+                <p class="font-semibold text-gray-700" id="wa-date">📋 Daily Purchase</p>
+                <p>• Rice (5kg) — AED 28.00</p>
+                <p>• Sugar (2kg) — AED 12.00</p>
+                <p>• Oil (1L) — AED 15.00</p>
+                <hr class="my-1 border-gray-200"/>
+                <p class="font-semibold text-red-600">💰 Total Outstanding: AED 1,245.00</p>
+                <p class="text-gray-500 text-[10px] mt-1">Please clear at your earliest convenience. JazakAllah Khair.</p>
+                <p class="text-gray-400 text-right text-[10px] mt-1">10:43 AM ✓✓</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PDF INVOICE PREVIEW ── -->
+<section class="max-w-5xl mx-auto px-4 py-20">
+  <div class="text-center mb-12">
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-1" data-en>PDF Invoice Preview</h2>
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-1 hidden bn" data-bn>পিডিএফ ইনভয়েস প্রিভিউ</h2>
+    <p class="text-xl text-emerald-600 font-semibold mb-3 bn">পিডিএফ ইনভয়েস প্রিভিউ</p>
+    <p class="text-gray-500 max-w-2xl mx-auto text-sm" data-en>Professional invoices with shop branding, ready for printing or digital sharing.</p>
+    <p class="text-gray-500 max-w-2xl mx-auto text-sm hidden bn" data-bn>দোকানের ব্র্যান্ডিং সহ পেশাদার ইনভয়েস — প্রিন্ট বা ডিজিটাল শেয়ারিংয়ের জন্য প্রস্তুত।</p>
+    <div class="flex justify-center mt-4"><div class="h-1 w-20 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500"></div></div>
+  </div>
+  <div class="flex justify-center">
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+      <div class="bg-gradient-to-r from-emerald-700 to-teal-700 text-white p-5 text-center">
+        <p class="text-xl font-extrabold tracking-wide">🏪 Abdun Nur Grocery LLC</p>
+        <p class="text-sm text-emerald-200 mt-1">Deira, Dubai, United Arab Emirates</p>
+        <p class="text-sm text-emerald-200">📞 +971-XX-XXX-XXXX</p>
+      </div>
+      <div class="bg-gray-50 px-5 py-3 flex justify-between text-xs text-gray-600 border-b border-gray-200">
+        <span><strong>Invoice #:</strong> INV-20240115-001</span>
+        <span id="inv-date"><strong>Date:</strong> </span>
+      </div>
+      <div class="px-5 py-3 border-b border-gray-100 text-sm">
+        <p class="text-xs text-gray-500 uppercase font-semibold mb-1">Customer</p>
+        <p class="font-bold text-gray-900">Mr. Rahman Ali</p>
+        <p class="text-gray-500 text-xs">+971-50-XXX-XXXX · Al Muteena, Deira</p>
+      </div>
+      <div class="px-5 py-3">
+        <table class="w-full text-xs">
+          <thead><tr class="bg-gray-100 text-gray-700">
+            <th class="text-left py-2 px-2 rounded-l">Item</th>
+            <th class="text-center py-2 px-2">Qty</th>
+            <th class="text-right py-2 px-2">Price</th>
+            <th class="text-right py-2 px-2 rounded-r">Total</th>
+          </tr></thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr class="text-gray-700"><td class="py-1.5 px-2">Basmati Rice</td><td class="py-1.5 px-2 text-center">5 kg</td><td class="py-1.5 px-2 text-right">AED 5.60</td><td class="py-1.5 px-2 text-right font-semibold">AED 28.00</td></tr>
+            <tr class="text-gray-700"><td class="py-1.5 px-2">White Sugar</td><td class="py-1.5 px-2 text-center">2 kg</td><td class="py-1.5 px-2 text-right">AED 6.00</td><td class="py-1.5 px-2 text-right font-semibold">AED 12.00</td></tr>
+            <tr class="text-gray-700"><td class="py-1.5 px-2">Sunflower Oil</td><td class="py-1.5 px-2 text-center">1 L</td><td class="py-1.5 px-2 text-right">AED 15.00</td><td class="py-1.5 px-2 text-right font-semibold">AED 15.00</td></tr>
+            <tr class="text-gray-700"><td class="py-1.5 px-2">Lentils</td><td class="py-1.5 px-2 text-center">3 kg</td><td class="py-1.5 px-2 text-right">AED 7.50</td><td class="py-1.5 px-2 text-right font-semibold">AED 22.50</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="px-5 py-4 bg-gray-50 border-t border-gray-200 space-y-1 text-sm">
+        <div class="flex justify-between text-gray-600"><span>Previous Balance:</span><span>AED 1,167.50</span></div>
+        <div class="flex justify-between text-gray-600"><span>Today's Purchase:</span><span>AED 77.50</span></div>
+        <div class="flex justify-between font-extrabold text-red-700 text-base border-t border-red-200 pt-2 mt-2">
+          <span>TOTAL OUTSTANDING:</span><span>AED 1,245.00</span>
+        </div>
+      </div>
+      <div class="text-center py-3 text-xs text-gray-400 border-t">Generated by Abdun Nur Credit Management System</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="bg-gray-900 text-gray-300">
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    <div class="grid md:grid-cols-3 gap-8 mb-8">
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center font-bold text-white">AN</div>
+          <div><p class="font-bold text-white text-sm">Abdun Nur Grocery LLC</p><p class="text-xs text-emerald-400">Credit Management System</p></div>
+        </div>
+        <p class="text-sm leading-relaxed text-gray-400">A private, secure business tool for professional credit management in the retail grocery sector.</p>
+      </div>
+      <div>
+        <p class="font-semibold text-white mb-3">Shop Details</p>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li>📍 Deira, Dubai, UAE</li>
+          <li>🏪 Abdun Nur Grocery LLC</li>
+          <li>💼 Trade License: Dubai DED</li>
+          <li>🕌 Open 7 days a week</li>
+        </ul>
+      </div>
+      <div>
+        <p class="font-semibold text-white mb-3">Quick Links / দ্রুত লিঙ্ক</p>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li>Features / বৈশিষ্ট্য</li>
+          <li>How It Works / কীভাবে কাজ করে</li>
+          <li>Tech Stack / প্রযুক্তি</li>
+          <li>Installation / ইনস্টলেশন</li>
+          <li>Legal Notice / আইনি নোটিশ</li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-gray-800 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+      <p id="footer-year">© 2025 Abdun Nur Grocery LLC. All rights reserved. — সর্বস্বত্ব সংরক্ষিত।</p>
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>Private Repository — ব্যক্তিগত রিপোজিটরি</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Data ──
+const FEATURES = {
+  en: [
+    { icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2", title: "Customer Ledger", desc: "Track every item purchased by name, date, quantity, unit price and running total — per customer, per visit.", badge: "Core", color: "from-emerald-500 to-teal-600", bg: "bg-emerald-50", border: "border-emerald-200", badgeColor: "bg-emerald-100 text-emerald-700" },
+    { icon: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 11h.01M12 11h.01M15 11h.01M4 19h16a2 2 0 002-2V7a2 2 0 00-2-2H4a2 2 0 00-2 2v10a2 2 0 002 2z", title: "Automated Calculations", desc: "Daily & monthly outstanding balances computed automatically. Zero manual math — always accurate.", badge: "Smart", color: "from-blue-500 to-indigo-600", bg: "bg-blue-50", border: "border-blue-200", badgeColor: "bg-blue-100 text-blue-700" },
+    { icon: "M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z", title: "Professional PDF Invoices", desc: "One-click download of branded invoices including shop name, phone number, address header and itemised bill.", badge: "PDF", color: "from-orange-500 to-red-500", bg: "bg-orange-50", border: "border-orange-200", badgeColor: "bg-orange-100 text-orange-700" },
+    { icon: "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z", title: "Legal Notice Generator", desc: "Auto-generate a formal 'Notice of Default' PDF suitable for police / court complaints against debt abandonment.", badge: "Legal", color: "from-red-600 to-rose-700", bg: "bg-red-50", border: "border-red-200", badgeColor: "bg-red-100 text-red-700" },
+    { icon: "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z", title: "WhatsApp Automation", desc: "Instantly generate pre-filled WhatsApp message templates listing daily purchases and total pending dues for each customer.", badge: "Auto", color: "from-green-500 to-emerald-600", bg: "bg-green-50", border: "border-green-200", badgeColor: "bg-green-100 text-green-700" },
+    { icon: "M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z", title: "Mobile-First Responsive UI", desc: "Fully optimised for smartphones. Manage your shop credit from any device — no installation required.", badge: "UI", color: "from-violet-500 to-purple-600", bg: "bg-violet-50", border: "border-violet-200", badgeColor: "bg-violet-100 text-violet-700" },
+  ],
+  bn: [
+    { icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2", title: "কাস্টমার লেজার", desc: "প্রতিটি গ্রাহকের জন্য পণ্যের নাম, তারিখ, পরিমাণ, একক মূল্য এবং মোট বকেয়া পৃথকভাবে ট্র্যাক করুন।", badge: "মূল", color: "from-emerald-500 to-teal-600", bg: "bg-emerald-50", border: "border-emerald-200", badgeColor: "bg-emerald-100 text-emerald-700" },
+    { icon: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 11h.01M12 11h.01M15 11h.01M4 19h16a2 2 0 002-2V7a2 2 0 00-2-2H4a2 2 0 00-2 2v10a2 2 0 002 2z", title: "স্বয়ংক্রিয় হিসাব", desc: "দৈনিক ও মাসিক বকেয়া স্বয়ংক্রিয়ভাবে গণনা হয়। কোনো ম্যানুয়াল যোগ-বিয়োগ নেই — সর্বদা নির্ভুল।", badge: "স্মার্ট", color: "from-blue-500 to-indigo-600", bg: "bg-blue-50", border: "border-blue-200", badgeColor: "bg-blue-100 text-blue-700" },
+    { icon: "M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z", title: "পেশাদার PDF ইনভয়েস", desc: "দোকানের নাম, ফোন নম্বর ও ঠিকানাসহ ব্র্যান্ডেড ইনভয়েস এক ক্লিকে ডাউনলোড করুন।", badge: "পিডিএফ", color: "from-orange-500 to-red-500", bg: "bg-orange-50", border: "border-orange-200", badgeColor: "bg-orange-100 text-orange-700" },
+    { icon: "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z", title: "আইনি নোটিশ জেনারেটর", desc: "ঋণ পরিশোধ না করা গ্রাহকের বিরুদ্ধে পুলিশ/আদালতে অভিযোগের জন্য আনুষ্ঠানিক 'ডিফল্ট নোটিশ' PDF তৈরি করুন।", badge: "আইনি", color: "from-red-600 to-rose-700", bg: "bg-red-50", border: "border-red-200", badgeColor: "bg-red-100 text-red-700" },
+    { icon: "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z", title: "হোয়াটসঅ্যাপ অটোমেশন", desc: "প্রতিটি গ্রাহকের দৈনিক ক্রয় ও মোট বকেয়া সম্বলিত প্রি-ফিলড হোয়াটসঅ্যাপ মেসেজ টেমপ্লেট তৈরি করুন।", badge: "অটো", color: "from-green-500 to-emerald-600", bg: "bg-green-50", border: "border-green-200", badgeColor: "bg-green-100 text-green-700" },
+    { icon: "M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z", title: "মোবাইল-ফার্স্ট UI", desc: "স্মার্টফোনের জন্য সম্পূর্ণ অপ্টিমাইজড। যেকোনো ডিভাইস থেকে পরিচালনা করুন — ইন্সটলেশন প্রয়োজন নেই।", badge: "ইউআই", color: "from-violet-500 to-purple-600", bg: "bg-violet-50", border: "border-violet-200", badgeColor: "bg-violet-100 text-violet-700" },
+  ]
+};
+
+const WORKFLOW = {
+  en: [
+    { step: "01", title: "Add Customer", desc: "Register a new customer with full name, mobile number and address. A unique ledger is auto-created.", icon: "M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" },
+    { step: "02", title: "Log Transaction", desc: "Enter item name, quantity and unit price. The system auto-calculates the daily subtotal and updates the running balance.", icon: "M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" },
+    { step: "03", title: "Generate PDF Invoice", desc: "Click 'Download Invoice' to export a branded PDF with shop header, itemised list and outstanding total.", icon: "M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" },
+    { step: "04", title: "Send WhatsApp Message", desc: "Tap 'Send via WhatsApp' to auto-open WhatsApp with a pre-filled message showing purchases and dues.", icon: "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" },
+    { step: "05", title: "Issue Legal Notice", desc: "If a customer abandons debt, use the Legal Notice Generator to create a formal PDF for police/court submission.", icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" },
+  ],
+  bn: [
+    { step: "০১", title: "গ্রাহক যোগ করুন", desc: "নতুন গ্রাহকের পূর্ণ নাম, মোবাইল নম্বর ও ঠিকানা নথিভুক্ত করুন। স্বয়ংক্রিয়ভাবে একটি লেজার তৈরি হবে।", icon: "M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" },
+    { step: "০২", title: "লেনদেন লগ করুন", desc: "পণ্যের নাম, পরিমাণ ও একক মূল্য প্রবেশ করুন। সিস্টেম স্বয়ংক্রিয়ভাবে দৈনিক সাবটোটাল ও চলমান ব্যালেন্স আপডেট করবে।", icon: "M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" },
+    { step: "০৩", title: "PDF ইনভয়েস তৈরি করুন", desc: "'ইনভয়েস ডাউনলোড' ক্লিক করে দোকানের হেডার, আইটেম তালিকা ও মোট বকেয়াসহ ব্র্যান্ডেড PDF রপ্তানি করুন।", icon: "M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" },
+    { step: "০৪", title: "হোয়াটসঅ্যাপ মেসেজ পাঠান", desc: "'হোয়াটসঅ্যাপে পাঠান' ট্যাপ করুন — ক্রয় ও বকেয়া সহ প্রি-ফিলড মেসেজ সহ হোয়াটসঅ্যাপ স্বয়ংক্রিয়ভাবে খুলবে।", icon: "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" },
+    { step: "০৫", title: "আইনি নোটিশ জারি করুন", desc: "কোনো গ্রাহক ঋণ পরিশোধ না করলে, আইনি নোটিশ জেনারেটর দিয়ে পুলিশ/আদালতের জন্য আনুষ্ঠানিক PDF তৈরি করুন।", icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" },
+  ]
+};
+
+const SETUP = [
+  { en: "Clone the repository", bn: "রিপোজিটরি ক্লোন করুন", cmd: "git clone https://github.com/your-username/abdun-nur-credit-system.git" },
+  { en: "Navigate to project folder", bn: "প্রজেক্ট ফোল্ডারে যান", cmd: "cd abdun-nur-credit-system" },
+  { en: "Install dependencies", bn: "ডিপেন্ডেন্সি ইন্সটল করুন", cmd: "npm install" },
+  { en: "Configure Firebase credentials in .env", bn: ".env ফাইলে Firebase কনফিগ সেট করুন", cmd: "cp .env.example .env  # then fill in your keys" },
+  { en: "Run development server", bn: "ডেভেলপমেন্ট সার্ভার চালু করুন", cmd: "npm run dev" },
+  { en: "Open in browser", bn: "ব্রাউজারে খুলুন", cmd: "http://localhost:5173" },
+];
+
+const STEP_COLORS = ["from-emerald-500 to-teal-500","from-blue-500 to-indigo-500","from-orange-500 to-red-500","from-green-500 to-emerald-500","from-red-600 to-rose-600"];
+
+let currentLang = 'en';
+
+function svgIcon(d, size=20) {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block flex-shrink-0"><path d="${d}"/></svg>`;
+}
+
+function renderFeatures(lang) {
+  const grid = document.getElementById('features-grid');
+  grid.innerHTML = FEATURES[lang].map(f => `
+    <div class="rounded-2xl border ${f.border} ${f.bg} p-6 flex flex-col gap-3 shadow-sm card-hover">
+      <div class="flex items-center justify-between">
+        <div class="p-2 rounded-xl bg-gradient-to-br ${f.color} text-white shadow">${svgIcon(f.icon, 22)}</div>
+        <span class="inline-block px-2 py-0.5 rounded-full text-xs font-semibold ${f.badgeColor}">${f.badge}</span>
+      </div>
+      <h3 class="text-base font-bold text-gray-900">${f.title}</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">${f.desc}</p>
+    </div>
+  `).join('');
+}
+
+function renderWorkflow(lang) {
+  const list = document.getElementById('workflow-list');
+  list.innerHTML = WORKFLOW[lang].map((w, i) => `
+    <div class="flex gap-4">
+      <div class="flex flex-col items-center">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br ${STEP_COLORS[i]} flex items-center justify-center text-white font-bold text-sm shadow-md flex-shrink-0">${w.step}</div>
+        ${i < 4 ? '<div class="w-0.5 h-full bg-gradient-to-b from-gray-300 to-transparent mt-2 min-h-8"></div>' : ''}
+      </div>
+      <div class="pb-8">
+        <div class="flex items-center gap-2 mb-1">${svgIcon(w.icon, 16)}<h4 class="font-bold text-gray-900 text-sm md:text-base">${w.title}</h4></div>
+        <p class="text-sm text-gray-600 leading-relaxed">${w.desc}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderSetup() {
+  const list = document.getElementById('setup-list');
+  list.innerHTML = SETUP.map((s, i) => `
+    <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+      <div class="flex items-center gap-3 sm:w-72 flex-shrink-0">
+        <div class="w-7 h-7 rounded-full bg-emerald-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">${i+1}</div>
+        <div>
+          <p class="text-sm font-semibold text-gray-800">${s.en}</p>
+          <p class="text-xs text-emerald-600">${s.bn}</p>
+        </div>
+      </div>
+      <div class="flex-1">
+        <div class="relative group bg-gray-900 rounded-xl overflow-hidden shadow-lg">
+          <div class="flex items-center gap-2 px-4 py-2 bg-gray-800 border-b border-gray-700">
+            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+            <span class="ml-2 text-gray-400 text-xs font-mono">terminal</span>
+          </div>
+          <div class="px-4 py-3 flex items-center justify-between gap-3">
+            <code class="text-emerald-400 text-xs md:text-sm font-mono break-all">${s.cmd}</code>
+            <button onclick="copyCmd(this,'${s.cmd.replace(/'/g,"\\'")}' )" class="text-gray-400 hover:text-white transition-colors flex-shrink-0 text-xs px-2 py-1 rounded border border-gray-600 hover:border-gray-400">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function copyCmd(btn, text) {
+  navigator.clipboard.writeText(text);
+  btn.textContent = '✓';
+  setTimeout(() => btn.textContent = 'Copy', 1500);
+}
+
+function updateLangElements(lang) {
+  // Toggle data-en / data-bn visibility
+  document.querySelectorAll('[data-en]').forEach(el => {
+    el.classList.toggle('hidden', lang !== 'en');
+  });
+  document.querySelectorAll('[data-bn]').forEach(el => {
+    el.classList.toggle('hidden', lang !== 'bn');
+  });
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-en').className = `px-3 py-1 rounded-full text-xs font-semibold transition-all ${lang==='en' ? 'bg-emerald-600 text-white shadow' : 'text-gray-500 hover:text-gray-800'}`;
+  document.getElementById('btn-bn').className = `px-3 py-1 rounded-full text-xs font-semibold transition-all ${lang==='bn' ? 'bg-emerald-600 text-white shadow' : 'text-gray-500 hover:text-gray-800'}`;
+  renderFeatures(lang);
+  renderWorkflow(lang);
+  updateLangElements(lang);
+}
+
+// Init
+const today = new Date().toLocaleDateString('en-GB');
+document.getElementById('wa-date').textContent = '📋 Daily Purchase — ' + today;
+document.getElementById('inv-date').innerHTML = '<strong>Date:</strong> ' + today;
+document.getElementById('footer-year').textContent = '© ' + new Date().getFullYear() + ' Abdun Nur Grocery LLC. All rights reserved. — সর্বস্বত্ব সংরক্ষিত।';
+
+renderFeatures('en');
+renderWorkflow('en');
+renderSetup();
+updateLangElements('en');
+</script>
 </body>
-</html>
+                </html>
